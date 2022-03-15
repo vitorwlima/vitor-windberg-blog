@@ -1,0 +1,12 @@
+query AllPosts($language: Languages!) {
+  posts(where: { language: $language }) {
+    title
+    id
+    slug
+    publishedAt
+    language
+    content {
+      html
+    }
+  }
+}

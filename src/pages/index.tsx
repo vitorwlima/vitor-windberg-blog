@@ -1,36 +1,23 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
-import { useQuery } from 'urql'
 
+import {
+  AllPostsDocument,
+  Languages,
+  useAllPostsQuery,
+} from '../graphql/generated/graphql'
 import { client, ssrCache } from '../lib/urql'
 
-const AllPostsQuery = `
-  query {
-    posts(where: {
-      status: {
-        equals: "published"
-      }
-    }) {
-      id
-      title
-      slug
-      status
-      content {
-        document
-      }
-      publishDate
-    }
-  }
-`
-
 const Home: NextPage = () => {
-  const [result] = useQuery({ query: AllPostsQuery })
-  const { data, fetching, error } = result
+  const [{ data, error, fetching }] = useAllPostsQuery({
+    variables: {
+      language: Languages.English,
+    },
+  })
 
-  if (fetching) return <div>Loading...</div>
   if (error) return <div>Um erro ocorreu.</div>
+  if (fetching) return <div>Carregando</div>
 
-  console.log({ data })
   return (
     <div className="flex min-h-screen flex-col items-center justify-center py-2">
       <Head>
@@ -39,13 +26,20 @@ const Home: NextPage = () => {
       </Head>
 
       <h1 className="text-4xl font-bold text-blue-500">Hello World</h1>
+      <h2>{data?.posts[0].title}</h2>
     </div>
   )
 }
 
-export const getStaticProps = async () => {
-  await client.query(AllPostsQuery).toPromise()
-  return { props: { urqlState: ssrCache.extractData() } }
+export const getStaticProps: GetStaticProps = async () => {
+  await client
+    .query(AllPostsDocument, { language: Languages.English })
+    .toPromise()
+  return {
+    props: {
+      urqlState: ssrCache.extractData(),
+    },
+  }
 }
 
 export default Home

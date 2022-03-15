@@ -10,7 +10,7 @@ const isServerSide = typeof window === 'undefined'
 const ssrCache = ssrExchange({ isClient: !isServerSide })
 
 const client = createClient({
-  url: process.env.NEXT_PUBLIC_GRAPHQL_URL!,
+  url: 'https://api-sa-east-1.graphcms.com/v2/cl0ptv5fc9vs201z22e49exv7/master',
   exchanges: [dedupExchange, cacheExchange, ssrCache, fetchExchange],
 })
 
