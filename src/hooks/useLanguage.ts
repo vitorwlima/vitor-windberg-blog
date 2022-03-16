@@ -14,13 +14,14 @@ const getLocaleByLanguage = (language: Languages): string => {
 }
 
 const useLanguage = () => {
-  const { locale } = useRouter()
+  const { locale, push, asPath } = useRouter()
   const [_, setCookie] = useCookies(['NEXT_LOCALE'])
 
   const language = getLanguageByLocale(locale)
   const setLanguage = (value: Languages) => {
     const cookieValue = getLocaleByLanguage(value)
     setCookie('NEXT_LOCALE', cookieValue)
+    push(asPath, undefined, { locale: cookieValue })
   }
 
   return { language, setLanguage }

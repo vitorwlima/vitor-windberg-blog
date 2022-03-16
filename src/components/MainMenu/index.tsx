@@ -32,7 +32,6 @@ const MainMenu = () => {
         ? Languages.English
         : Languages.Portuguese
     setLanguage(value)
-    window.location.href = '/'
   }
 
   return (
