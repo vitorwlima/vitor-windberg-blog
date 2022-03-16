@@ -3419,7 +3419,7 @@ export enum _SystemDateTimeFieldVariation {
 }
 
 export type AllPostsQueryVariables = Exact<{
-  language: Languages;
+  language?: InputMaybe<Languages>;
 }>;
 
 
@@ -3427,7 +3427,7 @@ export type AllPostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 
 
 
 export const AllPostsDocument = gql`
-    query AllPosts($language: Languages!) {
+    query AllPosts($language: Languages) {
   posts(where: {language: $language}) {
     title
     id
@@ -3441,6 +3441,6 @@ export const AllPostsDocument = gql`
 }
     `;
 
-export function useAllPostsQuery(options: Omit<Urql.UseQueryArgs<AllPostsQueryVariables>, 'query'>) {
+export function useAllPostsQuery(options?: Omit<Urql.UseQueryArgs<AllPostsQueryVariables>, 'query'>) {
   return Urql.useQuery<AllPostsQuery>({ query: AllPostsDocument, ...options });
 };

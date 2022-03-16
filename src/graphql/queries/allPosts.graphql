@@ -1,4 +1,4 @@
-query AllPosts($language: Languages!) {
+query AllPosts($language: Languages) {
   posts(where: { language: $language }) {
     title
     id

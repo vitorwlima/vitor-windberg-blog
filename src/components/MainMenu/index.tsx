@@ -4,8 +4,10 @@ import { MenuIcon, XIcon, SunIcon } from '@heroicons/react/solid'
 import { Logo } from '../'
 import { colors } from '../../styles/colors'
 import { Languages } from '../../graphql/generated/graphql'
+import { useLanguage } from '../../hooks/useLanguage'
 
 const MainMenu = () => {
+  const { language, setLanguage } = useLanguage()
   const [showMenu, setShowMenu] = useState(false)
   const menuPosition = showMenu ? '' : '-translate-x-full'
 
@@ -14,15 +16,24 @@ const MainMenu = () => {
       image: '/brazil.svg',
       label: 'Português',
       value: Languages.Portuguese,
-      active: true,
+      active: language === Languages.Portuguese,
     },
     {
       image: '/united_states.svg',
       label: 'English',
       value: Languages.English,
-      active: false,
+      active: language === Languages.English,
     },
   ]
+
+  const switchLanguage = () => {
+    const value =
+      language === Languages.Portuguese
+        ? Languages.English
+        : Languages.Portuguese
+    setLanguage(value)
+    window.location.href = '/'
+  }
 
   return (
     <div>
@@ -48,6 +59,7 @@ const MainMenu = () => {
           <section className="flex flex-col gap-4">
             {languages.map((language) => (
               <button
+                onClick={() => switchLanguage()}
                 className="flex max-w-max items-center gap-4"
                 key={language.value}
               >
@@ -77,7 +89,7 @@ const MainMenu = () => {
           <button>
             <SunIcon color={colors.main} className="h-8 w-8" />
           </button>
-          <button>
+          <button onClick={() => switchLanguage()}>
             <img
               src={languages.find((item) => item.active)?.image}
               className="h-8 w-8"
