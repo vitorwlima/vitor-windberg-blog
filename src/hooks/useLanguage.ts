@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router'
 import { useCookies } from 'react-cookie'
 
-import { Languages } from '../graphql/generated/graphql'
+import { Languages } from 'src/graphql/generated/graphql'
 
 const getLanguageByLocale = (language?: string): Languages => {
   if (language === 'pt-BR') return Languages.Portuguese

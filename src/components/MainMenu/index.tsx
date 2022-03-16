@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { MenuIcon, XIcon, SunIcon } from '@heroicons/react/solid'
 
 import { Logo } from '../'
-import { colors } from '../../styles/colors'
-import { Languages } from '../../graphql/generated/graphql'
-import { useLanguage } from '../../hooks/useLanguage'
+import { colors } from 'src/styles/colors'
+import { Languages } from 'src/graphql/generated/graphql'
+import { useLanguage } from 'src/hooks/useLanguage'
 
 const MainMenu = () => {
   const { language, setLanguage } = useLanguage()

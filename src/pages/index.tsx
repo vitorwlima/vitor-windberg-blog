@@ -3,11 +3,10 @@ import Head from 'next/head'
 
 import {
   AllPostsDocument,
-  Languages,
   useAllPostsQuery,
-} from '../graphql/generated/graphql'
-import { getLanguageByLocale, useLanguage } from '../hooks/useLanguage'
-import { client, ssrCache } from '../lib/urql'
+} from 'src/graphql/generated/graphql'
+import { getLanguageByLocale, useLanguage } from 'src/hooks/useLanguage'
+import { client, ssrCache } from 'src/lib/urql'
 
 const Home: NextPage = () => {
   const { language } = useLanguage()

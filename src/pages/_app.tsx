@@ -1,9 +1,9 @@
 import type { AppProps } from 'next/app'
 import { Provider } from 'urql'
-import '../styles/globals.css'
 
-import { client, ssrCache } from '../lib/urql'
-import { Logo, MainMenu } from '../components'
+import 'src/styles/globals.css'
+import { client, ssrCache } from 'src/lib/urql'
+import { Logo, MainMenu } from 'src/components'
 
 function MyApp({ Component, pageProps }: AppProps) {
   if (pageProps.urqlState) {
