@@ -1,16 +1,12 @@
 import { NextPage } from 'next'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
 import { Logo } from 'src/components/Logo'
 import { MainMenu } from 'src/components/MainMenu'
 import { usePosts } from 'src/graphql/queries/usePosts'
-import { getLanguageByLocale, Languages } from 'src/helpers/language'
 
 const Home: NextPage = () => {
-  const { locale } = useRouter()
-  const language = getLanguageByLocale(locale)
-  const { data } = usePosts(language)
+  const { data } = usePosts()
 
   return (
     <>

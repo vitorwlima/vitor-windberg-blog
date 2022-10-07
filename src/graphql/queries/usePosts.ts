@@ -1,10 +1,14 @@
+import { useRouter } from 'next/router'
 import { gql } from 'graphql-request'
 import { useQuery } from '@tanstack/react-query'
 
-import { Languages } from 'src/helpers/language'
+import { getLanguageByLocale } from 'src/helpers/language'
 import { graphQLClient } from '../client'
 
-export const usePosts = (language: Languages) => {
+export const usePosts = () => {
+  const { locale } = useRouter()
+  const language = getLanguageByLocale(locale)
+
   const query = gql`
     query Posts($locale: [Locale!]!) {
       posts(locales: $locale) {

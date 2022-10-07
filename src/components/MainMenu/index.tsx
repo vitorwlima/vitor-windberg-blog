@@ -2,38 +2,13 @@ import { useState } from 'react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid'
 
 import { Logo } from '../Logo'
-import { useLanguage, Languages } from 'src/helpers/language'
-import { usePosts } from 'src/graphql/queries/usePosts'
+import { useLanguage } from 'src/helpers/language'
 
 const MainMenu = () => {
   const [showMenu, setShowMenu] = useState(false)
-  const { language, setLanguage } = useLanguage()
-  const { refetch } = usePosts(language)
+  const { languages, switchLanguage } = useLanguage()
 
   const menuPosition = showMenu ? '' : '-translate-x-full'
-
-  const languages = [
-    {
-      image: '/brazil.svg',
-      label: 'Português',
-      value: Languages.Portuguese,
-      active: language === Languages.Portuguese,
-    },
-    {
-      image: '/united_states.svg',
-      label: 'English',
-      value: Languages.English,
-      active: language === Languages.English,
-    },
-  ]
-
-  const switchLanguage = () => {
-    const value = [Languages.Portuguese, Languages.English].find(
-      (l) => l !== language,
-    )!
-    setLanguage(value)
-    refetch()
-  }
 
   return (
     <div>
