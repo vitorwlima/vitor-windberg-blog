@@ -37,17 +37,22 @@ const useLanguage = () => {
     },
   ]
 
-  const switchLanguage = () => {
-    const value = [Languages.Portuguese, Languages.English].find(
-      (l) => l !== language,
-    )!
-
+  const setLanguage = (value: Languages) => {
     const cookieValue = getLocaleByLanguage(value)
     setCookie('NEXT_LOCALE', cookieValue)
     push(asPath, undefined, { locale: cookieValue })
   }
 
-  return { language, languages, switchLanguage }
+  const switchLanguage = () => {
+    if (language === Languages.English) {
+      setLanguage(Languages.Portuguese)
+      return;
+    }
+
+    setLanguage(Languages.English)
+  }
+
+  return { language, languages, setLanguage, switchLanguage }
 }
 
-export { useLanguage, getLanguageByLocale }
+export { useLanguage, getLanguageByLocale, Languages }

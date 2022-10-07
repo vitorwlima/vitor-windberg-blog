@@ -6,7 +6,7 @@ import { useLanguage } from 'src/helpers/language'
 
 const MainMenu = () => {
   const [showMenu, setShowMenu] = useState(false)
-  const { languages, switchLanguage } = useLanguage()
+  const { languages, setLanguage, switchLanguage } = useLanguage()
 
   const menuPosition = showMenu ? '' : '-translate-x-full'
 
@@ -34,7 +34,7 @@ const MainMenu = () => {
           <section className="flex flex-col gap-4">
             {languages.map((language) => (
               <button
-                onClick={() => switchLanguage()}
+                onClick={() => setLanguage(language.value)}
                 className="flex max-w-max items-center gap-4"
                 key={language.value}
               >
