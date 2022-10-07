@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
     ? NextResponse.redirect(
         `/en${stripDefaultLocale(request.nextUrl.pathname)}${
           request.nextUrl.search
-        }`
+        }`,
       )
     : undefined
 }

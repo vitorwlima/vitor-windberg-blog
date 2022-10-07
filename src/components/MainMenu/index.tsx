@@ -1,14 +1,15 @@
 import { useState } from 'react'
-import { MenuIcon, XIcon, SunIcon } from '@heroicons/react/solid'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/20/solid'
 
-import { Logo } from '../'
-import { colors } from 'src/styles/colors'
-import { Languages } from 'src/graphql/generated/graphql'
-import { useLanguage } from 'src/hooks/useLanguage'
+import { Logo } from '../Logo'
+import { useLanguage, Languages } from 'src/helpers/language'
+import { usePosts } from 'src/graphql/queries/usePosts'
 
 const MainMenu = () => {
-  const { language, setLanguage } = useLanguage()
   const [showMenu, setShowMenu] = useState(false)
+  const { language, setLanguage } = useLanguage()
+  const { refetch } = usePosts(language)
+
   const menuPosition = showMenu ? '' : '-translate-x-full'
 
   const languages = [
@@ -27,28 +28,28 @@ const MainMenu = () => {
   ]
 
   const switchLanguage = () => {
-    const value =
-      language === Languages.Portuguese
-        ? Languages.English
-        : Languages.Portuguese
+    const value = [Languages.Portuguese, Languages.English].find(
+      (l) => l !== language,
+    )!
     setLanguage(value)
+    refetch()
   }
 
   return (
     <div>
       <button className="lg:hidden">
-        <MenuIcon
+        <Bars3Icon
           className="h-6 w-6"
           onClick={() => setShowMenu((prev) => !prev)}
         />
       </button>
       <div
-        className={`${menuPosition} absolute inset-0 h-screen overflow-hidden bg-white p-2 transition-transform lg:hidden`}
+        className={`${menuPosition} absolute inset-0 h-screen overflow-hidden bg-neutral-700 py-10 px-6 transition-transform lg:hidden`}
       >
         <header className="flex justify-between">
           <Logo />
           <button>
-            <XIcon
+            <XMarkIcon
               className="h-6 w-6"
               onClick={() => setShowMenu((prev) => !prev)}
             />
@@ -69,37 +70,16 @@ const MainMenu = () => {
               </button>
             ))}
           </section>
-          <section>
-            <button className="flex items-center gap-4">
-              <SunIcon color={colors.main} className="h-8 w-8" />
-              <p>Tema claro</p>
-            </button>
-          </section>
-          <section>
-            <button className="w-full rounded-md bg-blue-main p-2 font-bold text-white transition-all hover:opacity-90">
-              Inscrever-se
-            </button>
-          </section>
         </div>
       </div>
 
       <div className="hidden gap-16 lg:flex">
-        <section className="flex items-center gap-4">
-          <button>
-            <SunIcon color={colors.main} className="h-8 w-8" />
-          </button>
-          <button onClick={() => switchLanguage()}>
-            <img
-              src={languages.find((item) => item.active)?.image}
-              className="h-8 w-8"
-            />
-          </button>
-        </section>
-        <section>
-          <button className="rounded-md bg-blue-main py-2 px-8 font-bold text-white transition-all hover:opacity-90">
-            Inscrever-se
-          </button>
-        </section>
+        <button onClick={() => switchLanguage()}>
+          <img
+            src={languages.find((item) => item.active)!.image}
+            className="h-8 w-8"
+          />
+        </button>
       </div>
     </div>
   )

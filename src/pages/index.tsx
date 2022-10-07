@@ -1,50 +1,32 @@
-import type { GetServerSideProps, NextPage } from 'next'
+import { NextPage } from 'next'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 
-import {
-  AllPostsDocument,
-  useAllPostsQuery,
-} from 'src/graphql/generated/graphql'
-import { getLanguageByLocale, useLanguage } from 'src/hooks/useLanguage'
-import { client, ssrCache } from 'src/lib/urql'
+import { Logo } from 'src/components/Logo'
+import { MainMenu } from 'src/components/MainMenu'
+import { usePosts } from 'src/graphql/queries/usePosts'
+import { getLanguageByLocale, Languages } from 'src/helpers/language'
 
 const Home: NextPage = () => {
-  const { language } = useLanguage()
-  const [{ data, error, fetching }] = useAllPostsQuery({
-    variables: {
-      language,
-    },
-  })
-
-  if (error) return <div>Um erro ocorreu.</div>
-  if (fetching) return <div>Carregando</div>
+  const { locale } = useRouter()
+  const language = getLanguageByLocale(locale)
+  const { data } = usePosts(language)
 
   return (
-    <div className="flex flex-col">
+    <>
       <Head>
-        <title>Jovem Dev - Blog</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Vitor Windberg - Blog</title>
       </Head>
 
-      <div className="mt-24" />
-      {data?.posts.map((post) => (
-        <p>
-          {post.title} - {post.language}
-        </p>
-      ))}
-    </div>
+      <main className="mx-auto max-w-[1200px] py-10 px-6">
+        <header className="flex items-center justify-between">
+          <Logo />
+          <MainMenu />
+        </header>
+        <h1 className="mt-10 text-xl">Post: {data?.posts?.[0].title}</h1>
+      </main>
+    </>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  const language = getLanguageByLocale(locale)
-  await client.query(AllPostsDocument, { language }).toPromise()
-
-  return {
-    props: {
-      urqlState: ssrCache.extractData(),
-    },
-  }
 }
 
 export default Home
